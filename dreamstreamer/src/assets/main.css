@@ -1,0 +1,29 @@
+@import './base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: linear-gradient(135deg, #3b0767, #1e003a);
+    color: #e5e7eb;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+#app {
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+/* Sidebar padding and margin adjustments */
+aside {
+    padding: 1rem;
+    margin: 1rem;
+}
