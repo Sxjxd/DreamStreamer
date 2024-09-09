@@ -4,11 +4,11 @@
       <h2 class="text-3xl text-purple-400 font-bold mb-6">Login to DreamStreamer</h2>
       <form @submit.prevent="login">
         <div class="mb-4">
-          <label class="block text-gray-200 mb-2" for="email">Email</label>
+          <label class="block text-gray-200 mb-2" for="email">Username/Email</label>
           <input
               type="text"
-              id="email"
-              v-model="email"
+              id="username"
+              v-model="username"
               class="w-full p-3 rounded-lg bg-gray-700 text-white"
               required
           />
@@ -38,23 +38,42 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import {signIn, confirmSignUp, signUp} from 'aws-amplify/auth'
+import {signIn, getCurrentUser, fetchAuthSession, fetchUserAttributes, confirmSignUp, signUp} from 'aws-amplify/auth'
 
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const router = useRouter();
 
 const login = async () => {
   const user = await signIn({
-    username: email.value,
+    username: username.value,
     password: password.value,
   });
 
   if (user && user.nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
     console.log('New password required');
   } else if (user.nextStep.signInStep === 'CONFIRM_SIGN_UP') {
-    console.log('Confirm sign up');
-  } else {
+  router.push(`/confirm-signup?username=${username.value}`);
+  }
+  else {
+    const user = getCurrentUser();
+    const session = await fetchAuthSession(user);
+    const userAttributes = await fetchUserAttributes(user);
+    const role = userAttributes['custom:role'];
+    if (role === '1') {
+      router.push('/');
+    } else if (role === '0') {
+      router.push('/home');
+    } else {
+      console.log('Unauthorized User');
+    }
+
+
+    console.log('User:', user);
+    console.log('Session:', session);
+    console.log('User Attributes:', userAttributes);
+    console.log(userAttributes['custom:role']);
+
     console.log('Sign-in Successful')
   }
 };

@@ -1,6 +1,4 @@
-
-
-const cognitoConfig = ({
+const awsConfig = ({
     Auth: {
         Cognito: {
             region: 'ap-southeast-1',
@@ -11,4 +9,4 @@ const cognitoConfig = ({
     },
 })
 
-export default  cognitoConfig
+export default  awsConfig

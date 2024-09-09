@@ -6,6 +6,7 @@ import BrowseView  from "@/views/BrowseView.vue";
 import LibraryView from "@/views/LibraryView.vue";
 import LoginView from '../views/LoginView.vue';
 import SignUpView from '../views/SignUpView.vue';
+import ConfirmSignUpView from "@/views/ConfirmSignUpView.vue";
 
 const routes = [
   { path: '/', name: 'Landing', component: LandingView },
@@ -15,22 +16,12 @@ const routes = [
   { path: '/library', name: 'Library', component: LibraryView },
   { path: '/login', name: 'Login', component: LoginView },
   { path: '/signup', name: 'SignUp', component: SignUpView },
+  { path: '/confirm-signup', name: 'ConfirmSignUp', component: ConfirmSignUpView },
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-});
-
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated');
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login');
-  } else if ((to.name === 'Login' || to.name === 'SignUp') && isAuthenticated) {
-    next('/home');
-  } else {
-    next();
-  }
 });
 
 export default router;

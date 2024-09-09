@@ -4,10 +4,10 @@
       <h2 class="text-3xl text-purple-400 font-bold mb-6">Sign Up for DreamStreamer</h2>
       <form @submit.prevent="signup">
         <div class="mb-4">
-          <label class="block text-gray-200 mb-2" for="name">Name</label>
+          <label class="block text-gray-200 mb-2" for="username">Username</label>
           <input
               type="text"
-              id="name"
+              id="username"
               v-model="username"
               class="w-full p-3 rounded-lg bg-gray-700 text-white"
               required
@@ -43,13 +43,13 @@
               required
           />
         </div>
-        <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold">
+        <button
+            :disabled="isLoading"
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold"
+        >
           Sign Up
         </button>
-        <p class="text-gray-400 mt-4">
-          Already have an account?
-          <router-link to="/login" class="text-purple-400 hover:text-purple-500">Login</router-link>
-        </p>
+        <p v-if="errorMsg" class="text-red-500 text-sm mt-2">{{ errorMsg }}</p>
       </form>
     </div>
   </div>
@@ -64,17 +64,19 @@ const username = ref('');
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const isLoading = ref(false);
+const errorMsg = ref('');
 const router = useRouter();
 
 const signup = async () => {
   if (password.value !== confirmPassword.value) {
-    console.error('Passwords do not match!');
+    errorMsg.value = 'Passwords do not match!';
     return;
   }
-
+  isLoading.value = true;
   try {
-    const signUpResult = await signUp({
-      username: username.value,
+    await signUp({
+      username: username.value,  // Username should not be an email format
       password: password.value,
       options: {
         userAttributes: {
@@ -84,12 +86,13 @@ const signup = async () => {
         },
       },
     });
-
-    console.log('Sign-up success:', signUpResult);
-    router.push('/login'); // Redirect after successful sign-up
+    alert('Registration successful. Please verify your email address.');
+    router.push('/login');
   } catch (error) {
     console.error('Error signing up:', error);
+    errorMsg.value = error.message;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
-

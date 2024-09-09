@@ -13,7 +13,6 @@
       <router-link to="/browse" class="nav-link">Browse</router-link>
       <router-link to="/library" class="nav-link">Library</router-link>
     </nav>
-
     <!-- Login/Signup Buttons (visible on md and larger screens) -->
     <div class="hidden md:flex space-x-4">
       <router-link to="/login" class="btn-link">Login</router-link>
