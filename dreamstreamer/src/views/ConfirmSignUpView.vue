@@ -38,7 +38,6 @@ const route = useRoute();
 
 const confirmSignup = async () => {
   try {
-    console.log('username',route.query.username);
     await confirmSignUp({ username: route.query.username, confirmationCode: confirmationCode.value});
     const userAttributes = await fetchUserAttributes(user);
     const role = userAttributes['custom:role'];

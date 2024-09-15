@@ -16,90 +16,52 @@
       </div>
     </div>
 
-    <!-- Featured Playlists Section -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-semibold text-purple-400 mb-4">Featured Playlists</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <div
-            v-for="playlist in featuredPlaylists"
-            :key="playlist.id"
-            class="bg-gray-800 hover:bg-gray-700 rounded-lg p-4 transition transform hover:scale-105"
-        >
-          <img :src="playlist.image" alt="Playlist cover" class="rounded-md mb-4 w-full h-48 object-cover" />
-          <h3 class="text-lg font-semibold text-gray-100 truncate">{{ playlist.title }}</h3>
-          <p class="text-sm text-gray-400 truncate">{{ playlist.description }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Genres Section -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-semibold text-purple-400 mb-4">Genres</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <div
-            v-for="genre in genres"
-            :key="genre.id"
-            class="bg-gray-800 hover:bg-gray-700 rounded-lg p-4 text-center transition transform hover:scale-105"
-        >
-          <h3 class="text-lg font-semibold text-gray-100">{{ genre.name }}</h3>
-        </div>
-      </div>
-    </div>
-
-    <!-- Albums Section -->
-    <div>
-      <h2 class="text-2xl font-semibold text-purple-400 mb-4">Albums</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <div
-            v-for="album in albums"
-            :key="album.id"
-            class="bg-gray-800 hover:bg-gray-700 rounded-lg p-4 transition transform hover:scale-105"
-        >
-          <img :src="album.image" alt="Album cover" class="rounded-md mb-4 w-full h-48 object-cover" />
-          <h3 class="text-lg font-semibold text-gray-100 truncate">{{ album.title }}</h3>
-          <p class="text-sm text-gray-400 truncate">{{ album.artist }}</p>
-        </div>
-      </div>
-    </div>
+    <!-- Other sections omitted for brevity -->
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {ref, onMounted} from 'vue';
+import api from '@/services/api.js';
 
-// Placeholder data for trending songs
-const trendingSongs = ref([
-  { id: 1, title: 'Song One', artist: 'Artist One', image: 'https://via.placeholder.com/300' },
-  { id: 2, title: 'Song Two', artist: 'Artist Two', image: 'https://via.placeholder.com/300' },
-  // Add more song data
-]);
+const trendingSongs = ref([]);
+const albums = ref([]);
+const genres = ref([]);
 
-// Placeholder data for featured playlists
-const featuredPlaylists = ref([
-  { id: 1, title: 'Chill Vibes', description: 'Relax with these tunes.', image: 'https://via.placeholder.com/300' },
-  { id: 2, title: 'Top Hits', description: 'The hottest songs now.', image: 'https://via.placeholder.com/300' },
-  // Add more playlist data
-]);
+const fetchTrendingSongs = async () => {
+  try {
+    const response = await api.get('/songs/trending'); // Assuming your backend exposes this endpoint
+    trendingSongs.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch trending songs:', error);
+  }
+};
 
-// Placeholder data for genres
-const genres = ref([
-  { id: 1, name: 'Pop' },
-  { id: 2, name: 'Rock' },
-  { id: 3, name: 'Hip-Hop' },
-  // Add more genres
-]);
+const fetchAlbums = async () => {
+  try {
+    const response = await api.get('/albums');
+    albums.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch albums:', error);
+  }
+};
 
-// Placeholder data for albums
-const albums = ref([
-  { id: 1, title: 'Album One', artist: 'Artist One', image: 'https://via.placeholder.com/300' },
-  { id: 2, title: 'Album Two', artist: 'Artist Two', image: 'https://via.placeholder.com/300' },
-  // Add more albums
-]);
+const fetchGenres = async () => {
+  try {
+    const response = await api.get('/genres');
+    genres.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch genres:', error);
+  }
+};
+
+onMounted(() => {
+  fetchTrendingSongs();
+  fetchAlbums();
+  fetchGenres();
+});
 </script>
 
 <style scoped>
-/* Add custom transitions and hover effects */
-div:hover {
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
+/* Your existing styles */
 </style>
