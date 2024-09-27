@@ -103,3 +103,26 @@ Other Services:
 4. Start the vue.js application
    ```bash
    npm run dev
+
+## Screenshots
+
+### Landing Page
+![Landing Page 1 0](https://github.com/user-attachments/assets/751ad27c-b108-43ec-83f4-7aa7e74345df)
+
+
+### Home Page
+![Home Page 1 0](https://github.com/user-attachments/assets/64e1c484-0673-44e7-a06f-605e5bac3a98)
+
+### Browse Albums
+![View All Albums](https://github.com/user-attachments/assets/112efd20-eb88-4a73-904b-e84ef9451da7)
+
+### Admin Dashboard
+![Admin Dashboard 1 0](https://github.com/user-attachments/assets/60695676-f2e3-4ff4-ba3d-7d7fc19b8a04)
+![Admin Dashboard 1 1](https://github.com/user-attachments/assets/8aade5c5-7f35-490b-89e7-9f23c413451a)
+
+
+   
+
+
+
+
